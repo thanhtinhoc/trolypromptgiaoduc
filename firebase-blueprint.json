@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "GameConfig": {
+      "title": "Game Configuration",
+      "description": "An educational game configuration saved to Firebase",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The Firebase Auth user ID of the creator" },
+        "userEmail": { "type": "string", "description": "The Firebase Auth email of the creator" },
+        "gameName": { "type": "string" },
+        "subject": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "topic": { "type": "string" },
+        "targetPlayers": { "type": "string" },
+        "duration": { "type": "string" },
+        "learningGoals": { "type": "string" },
+        "gameTypes": { "type": "array" },
+        "customGameType": { "type": "string" },
+        "livesCount": { "type": "string" },
+        "questionsCount": { "type": "integer" },
+        "correctPoints": { "type": "integer" },
+        "hasWrongPenalty": { "type": "boolean" },
+        "penaltyPoints": { "type": "integer" },
+        "hasTimeLimit": { "type": "boolean" },
+        "timeLimitSeconds": { "type": "integer" },
+        "hasIntroScreen": { "type": "boolean" },
+        "hasTutorialScreen": { "type": "boolean" },
+        "hasSummaryScreen": { "type": "boolean" },
+        "hasLeaderboard": { "type": "boolean" },
+        "rawQuestions": { "type": "string" },
+        "aiGenerateQuestions": { "type": "boolean" },
+        "requirePlayerName": { "type": "boolean" },
+        "requirePlayerClass": { "type": "boolean" },
+        "requirePlayerSchool": { "type": "boolean" },
+        "requirePlayerId": { "type": "boolean" },
+        "uiTheme": { "type": "string" },
+        "uiColorStyle": { "type": "string" },
+        "uiElements": { "type": "array" },
+        "enabledSounds": { "type": "array" },
+        "enabledEffects": { "type": "array" },
+        "resultElements": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["gameName", "subject", "topic", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/game_configs/{configId}": {
+      "schema": "GameConfig",
+      "description": "Educational game configurations created by users"
+    }
+  }
+}

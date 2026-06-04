@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidGameConfig(data, isCreate) {
+      return data.userId == request.auth.uid
+        && data.gameName is string && data.gameName.size() <= 250
+        && data.subject is string && data.subject.size() <= 250
+        && data.topic is string && data.topic.size() <= 1000
+        && (isCreate ? data.createdAt == request.time : data.createdAt == resource.data.createdAt)
+        && data.updatedAt == request.time;
+    }
+
+    match /game_configs/{configId} {
+      allow get: if true;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+      allow create: if isSignedIn() 
+        && isValidId(configId)
+        && isValidGameConfig(incoming(), true);
+
+      allow update: if isSignedIn()
+        && isValidId(configId)
+        && isValidGameConfig(incoming(), false)
+        && existing().userId == request.auth.uid
+        && incoming().userId == existing().userId;
+
+      allow delete: if isSignedIn()
+        && isValidId(configId)
+        && existing().userId == request.auth.uid;
+    }
+  }
+}
