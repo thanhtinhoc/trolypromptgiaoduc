@@ -13,7 +13,7 @@ async function startServer() {
   app.use(express.json());
 
   // API Route: Check if default Gemini API Key is configured on the server
-  app.get("/api/gemini/status", (req, res) => {
+  app.get(["/api/gemini/status", "/api/status"], (req, res) => {
     const hasEnvKey = !!process.env.GEMINI_API_KEY && 
                       process.env.GEMINI_API_KEY !== "MY_GEMINI_API_KEY" && 
                       process.env.GEMINI_API_KEY.trim() !== "";
@@ -21,7 +21,7 @@ async function startServer() {
   });
 
   // API Route: Validate custom Gemini API Key
-  app.post("/api/gemini/validate", async (req, res) => {
+  app.post(["/api/gemini/validate", "/api/validate"], async (req, res) => {
     const { apiKey } = req.body;
     if (!apiKey || apiKey.trim() === "" || apiKey === "MY_GEMINI_API_KEY") {
       return res.status(400).json({ 
@@ -74,7 +74,7 @@ async function startServer() {
   });
 
   // API Route: Generate questions directly on backend
-  app.post("/api/gemini/generate-questions", async (req, res) => {
+  app.post(["/api/gemini/generate-questions", "/api/generate-questions"], async (req, res) => {
     const { apiKey, subject, gradeLevel, topic, questionsCount } = req.body;
     
     let activeKey = apiKey;

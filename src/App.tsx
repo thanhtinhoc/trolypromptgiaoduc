@@ -400,8 +400,9 @@ export default function App() {
     // Check if the backend has a default API Key configured
     const checkServerKeyStatus = async () => {
       try {
-        const res = await fetch("/api/gemini/status");
-        if (res.ok) {
+        const res = await fetch("/api/status");
+        const contentType = res.headers.get("content-type") || "";
+        if (res.ok && contentType.includes("application/json")) {
           const data = await res.json();
           if (data.success && data.hasEnvKey) {
             setHasServerApiKey(true);
@@ -744,12 +745,28 @@ D. Cần Thơ
     setApiKeyErrorMessage("");
 
     try {
-      const response = await fetch("/api/gemini/validate", {
+      // Gọi đúng route /api/validate theo chuẩn Vercel
+      const response = await fetch("/api/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ apiKey: key }),
       });
 
+      // Kiểm tra Content-Type và HTTP Status trước khi gọi response.json()
+      const contentType = response.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+
+      // Nếu route không tồn tại hoặc trả về HTML (ví dụ: 404 HTML page)
+      if (response.status === 404 || !isJson) {
+        setIsApiKeyValid(false);
+        const errMsg = "Thiếu API route validate trên Vercel";
+        setApiKeyErrorMessage(errMsg);
+        localStorage.setItem("gemini_api_key_custom_valid", "false");
+        triggerNotification(errMsg, "warning");
+        return;
+      }
+
+      // Khi chắc chắn là JSON mới parse
       const data = await response.json();
 
       if (response.ok && data.success) {
@@ -757,10 +774,10 @@ D. Cần Thơ
         setApiKeyErrorMessage("");
         localStorage.setItem("gemini_api_key_custom", key);
         localStorage.setItem("gemini_api_key_custom_valid", "true");
-        triggerNotification("Kết nối Gemini thành công! API Key của bạn hợp lệ và đã được lưu trữ lâu dài.", "success");
+        triggerNotification("Đã kích hoạt API Key thành công!", "success");
       } else {
         setIsApiKeyValid(false);
-        const errMsg = data.message || "Cảnh báo: API Key này không hoạt động hoặc không có quyền truy cập Gemini.";
+        const errMsg = "API key không hợp lệ";
         setApiKeyErrorMessage(errMsg);
         localStorage.setItem("gemini_api_key_custom_valid", "false");
         triggerNotification(errMsg, "warning");
@@ -801,7 +818,7 @@ D. Cần Thơ
     triggerNotification("Gemini đang thiết kế câu hỏi trắc nghiệm riêng cho bạn, vui lòng đợi trong giây lát...", "success");
 
     try {
-      const response = await fetch("/api/gemini/generate-questions", {
+      const response = await fetch("/api/generate-questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -812,6 +829,14 @@ D. Cần Thơ
           questionsCount: config.questionsCount,
         }),
       });
+
+      const contentType = response.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+
+      if (response.status === 404 || !isJson) {
+        triggerNotification("Thiếu API route generate-questions trên Vercel hoặc máy chủ không phản hồi JSON.", "warning");
+        return;
+      }
 
       const data = await response.json();
 
@@ -1001,7 +1026,7 @@ D. Cần Thơ
               {isApiKeyValid === true ? (
                 <span className="flex items-center gap-1 text-[11px] bg-emerald-950/40 text-emerald-400 font-bold border border-emerald-900/50 px-2.5 py-1 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Đã xác thực & Sẵn sàng
+                  Đã kích hoạt
                 </span>
               ) : isApiKeyValid === false ? (
                 <span className="flex items-center gap-1 text-[11px] bg-red-950/40 text-red-400 font-bold border border-red-900/50 px-2.5 py-1 rounded-full">
