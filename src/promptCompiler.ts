@@ -94,17 +94,7 @@ export function compilePrompt(config: GameConfig): string {
     + \`Khi trả lời ĐÚNG\`: Mảnh ghép được chọn lấp lánh bốc hơi rã đông rách mở lung linh để lộ ra một phần bức tranh tuyệt đẹp nguyên bản rực rỡ phía sau, nhạc hiệu hoan ca ngân tiếng vỗ tay rộn vang.
     + \`Khi trả lời SAI\`: Mảnh ghép rung lắc dữ dôi chớp đỏ báo động, từ chối hé mở và phát âm thanh cửa bị xích khóa khô khốc đầy bất lực.`;
       }
-      
-      // 9. DYNAMIC FOOTBALL / SOCCER (ĐÁ BÓNG)
-      else if (typeLower.includes("đá bóng") || typeLower.includes("bóng đá") || typeLower.includes("soccer") || typeLower.includes("football") || typeLower.includes("sút") || typeLower.includes("penalty")) {
-        gameplayFocusDetailed += `
-- **BỐ CỤC CHƠI ĐÁ BÓNG / SÚT PHẠT ĐỀN (PENALTY SHOOTOUT) KỊCH TÍNH**:
-  * **Thiết lập Mỹ thuật**: Sân cỏ xanh mướt mát có vạch sân kẻ vôi trắng sạch sẽ sắc nét. Cầu môn khung thành có lưới đan treo căng vững chãi đặt trang trọng ở phía trên màn hình. Quả bóng tròn cổ điển nằm ngay ngắn trên chấm phạt đền penalty. Thủ môn đối thủ đứng trực gác ngộ nghĩnh di chuyển qua lại liên tục gác đền.
-  * **Tính Tương Tác & Hoạt Họa Phản Hồi**:
-    + \`Khi trả lời ĐÚNG\`: Cầu thủ của học sinh tiến lên chạy ngắn bước nhanh, tung cú sút căng như kẻ chỉ, bóng bay bốc lửa xoáy thẳng vào góc chữ A hiểm hóc dải mành lưới rung rinh bần bật rách góc lưới. Thủ môn bay người bất lực đổ ngã. Âm thanh tiếng reo hò rền rĩ cả khán đài vang dội hoành tráng "VÀOOO-OO!" cùng pháo hoa rực rỡ bắn tung tóe chúc mừng.
-    + \`Khi trả lời SAI\`: Bóng sút dội cột dọc nảy ra ngoài, bay sạt xà ngang vọt xà, hoặc bị thủ môn bay người bắt dính gọn gàng quả bóng trong lòng đầy oai phong. Phát âm tiếng thở dài ngao ngán của khán giả và tiếng dội cột sạt vang dội tiếc rẻ u ám.`;
-      }
-      
+
       // 10. DYNAMIC BASKETBALL (BÓNG RỔ)
       else if (typeLower.includes("bóng rổ") || typeLower.includes("basketball") || typeLower.includes("ném rổ")) {
         gameplayFocusDetailed += `
@@ -114,7 +104,7 @@ export function compilePrompt(config: GameConfig): string {
     + \`Khi trả lời ĐÚNG\`: Cầu thủ bật cao tung cú ném bóng rổ hình cầu vồng parabol hoàn mỹ, bóng sút sạt trơn lọt giỏ úp rổ rầm "Slam Dunk" siêu đẳng làm tấm lưới co giãn rung bần bật bừng sáng bụi ngân hà lung linh, tiếng cười hô vàng của đám đông vang vang phấn khích lớn.
     + \`Khi trả lời SAI\`: Bóng ném bay lệch dội trúng vành đai sắt nảy lên khô khốc kêu to "KENG!" rồi văng ra xa vô phương cứu chữa, khán giả ôm đầu thất thanh thở dài nuối tiếc trầm tiếng trầm.`;
       }
-      
+
       // 11. DYNAMIC FISHING (CÂU CÁ)
       else if (typeLower.includes("câu cá") || typeLower.includes("fishing") || typeLower.includes("bắt cá")) {
         gameplayFocusDetailed += `
@@ -124,7 +114,7 @@ export function compilePrompt(config: GameConfig): string {
     + \`Khi trả lời ĐÚNG\`: Phao câu nhấp nhô rồi giật bọt nổi sủi tăm mạnh mẽ, cần thủ vung tay nhấc bổng chú cá vàng óng vẫy đuôi nhảy tanh tách lọt chuẩn sọt chứa nước lấp lánh phát sáng bừng mỡ màng, tiếng hò reo ca vui nhộn đón nhận hào quang rạng ngời.
     + \`Khi trả lời SAI\`: Cá rỉa sạch mồi câu rồi vẫy đuôi trốn kỹ lẩn khuất bơi lơ đãng đi mất hút, cần thủ nhấc dây câu rỗng tếch héo hon thất sủng dưới tiếng nước sủi buồn bã réo rắc.`;
       }
-      
+
       // 12. DYNAMIC WITCHCRAFT / CHEMISTRY (CHẾ THUỐC MA THUẬT PHÙ THỦY)
       else if (typeLower.includes("chế thuốc") || typeLower.includes("phù thủy") || typeLower.includes("alchemy") || typeLower.includes("chemistry") || typeLower.includes("hóa học")) {
         gameplayFocusDetailed += `
@@ -148,7 +138,7 @@ export function compilePrompt(config: GameConfig): string {
   } else {
     // General default adaptive fallback
     gameplayFocusDetailed += `
-- **YÊU CẦU TRẢI NGHIỆM GAMEPLAY TỔNG THỂ**:
+- **YÊU CẦU TRẢI EM GAMEPLAY TỔNG THỂ**:
   - Hãy lập trình và biến tấu toàn bộ cơ chế, giao diện trò chơi bám sát cực kỳ thông minh theo phong cách chủ đề "${gameTypesStr}".
   - Thiết kế hoạt họa CSS chuyển cảnh trực quan để học sinh nhìn thấy sự thăng tiến nhiệm vụ rõ rệt qua từng sự kiện:
     + Khi trả lời ĐÚNG: Hãy tạo một hoạt cảnh tương tác chiến thắng hoặc thăng tiến liên quan trực tiếp đến trải nghiệm này với hiệu ứng rộn ràng, rải bụi kim tuyến sáng rỡ đầy kích thích tâm lý, phát tiếng nhạc vui tai sảng khoái và điểm số nảy tưng bừng.
@@ -162,14 +152,12 @@ export function compilePrompt(config: GameConfig): string {
 - **YÊU CẦU TỰ ĐỘNG SINH CÂU HỎI**: Tôi chưa có danh sách câu hỏi cụ thể hoặc muốn bạn tự động thiết kế câu hỏi. Hãy tự động tạo khoảng ${config.questionsCount} câu hỏi trắc nghiệm chất lượng cao, từ dễ đến khó phù hợp trực tiếp với môn học "${config.subject}", khối lớp "${config.gradeLevel}" và chủ đề bài học "${config.topic}". Mỗi câu hỏi cần có 4 đáp án (A, B, C, D) rõ ràng, chỉ một đáp án đúng kèm giải thích ngắn gọn, súc tích.
 `;
   } else {
-    // Split input into sections/lines to analyze
     const textBuffer = config.rawQuestions.trim();
     let questionObjects: any[] = [];
 
     const pipeCount = (textBuffer.match(/\|/g) || []).length;
     const linesCount = textBuffer.split("\n").length;
 
-    // Decide if we should parse using pipe delimiter or multiline format
     if (pipeCount >= linesCount * 0.4 || pipeCount > 3) {
       // Classic Pipe Form: Column-separated
       const lines = textBuffer
@@ -196,75 +184,86 @@ export function compilePrompt(config: GameConfig): string {
         return null;
       }).filter(Boolean);
     } else {
-      // Multiline Human-Friendly Form: Matches format shown in user's image
-      const lines = textBuffer.split("\n").map((l) => l.trim());
+      // Extremely Robust Multiline Human-Friendly Parser (Handles optional prefixes, carriage returns, and spaces)
+      const lines = textBuffer.split(/\r?\n/).map((l) => l.trim());
       let currentQuestion: any = null;
+      let pendingQuestionTitle = "";
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (!line) continue;
 
-        // Check if line starts a new question, e.g., "Câu hỏi 1: Nội dung" or "Câu 1:"
-        const qMatch = line.match(/^(?:câu hỏi|cau hoi|câu|cau)\s*\d*\s*[:\-]\s*(.*)$/i);
+        // 1. Check if it's answer option A, B, C, or D
+        const optionMatch = line.match(/^([A-D])\s*[\.\:\-\)\/]?\s*(.*)$/i);
+
+        // 2. Check if it's correct answer indicator
+        const correctMatch = line.match(/^(?:đáp án đúng là|đáp án đúng|đáp án|dap an dung la|dap an dung|dap an|correct answer|correct|đúng|dung|key|ans)\s*[\.\:\-\/]?\s*([A-D])(?:\s|$|\.)/i);
+
+        // 3. Check if it's explanation
+        const expMatch = line.match(/^(?:giải thích|giai thich|lời giải|loi giai|giải thích lý do|explanation)\s*[\.\:\-]\s*(.*)$/i);
+
+        // 4. Check if it's an explicit question title starting with "Câu" or a number
+        const qMatch = line.match(/^(?:(?:câu hỏi|cau hoi|câu|cau)\s*\d*|\d+)\s*[\.\:\-\/]\s*(.*)$/i);
+
         if (qMatch) {
+          // Push previous question before starting new one
           if (currentQuestion && currentQuestion.question && Object.keys(currentQuestion.answers).length >= 2) {
             questionObjects.push(currentQuestion);
           }
           currentQuestion = {
             id: questionObjects.length + 1,
-            question: qMatch[1].trim(),
+            question: qMatch[1].trim() || line,
             answers: {},
             correctAnswer: "",
             explanation: "",
           };
+          pendingQuestionTitle = "";
           continue;
         }
 
-        // Check if it's answer option A, B, C, or D (e.g., A. Nội dung, B) Nội dung, C: Nội dung, D- Nội dung)
-        const optionMatch = line.match(/^([A-D])\s*[\.\:\-\)]\s*(.*)$/i);
-        if (optionMatch && currentQuestion) {
+        if (optionMatch) {
+          if (!currentQuestion) {
+            currentQuestion = {
+              id: questionObjects.length + 1,
+              question: pendingQuestionTitle.trim() || "Câu hỏi không rõ tiêu đề",
+              answers: {},
+              correctAnswer: "",
+              explanation: "",
+            };
+            pendingQuestionTitle = "";
+          }
           const optionLetter = optionMatch[1].toUpperCase() as "A" | "B" | "C" | "D";
           currentQuestion.answers[optionLetter] = optionMatch[2].trim();
           continue;
         }
 
-        // Check if it's correct answer indicator
-        const correctMatch = line.match(/^(?:đáp án đúng|dap an dung|đáp án|dap an|correct|correct answer)\s*[:\-]\s*([A-D])/i);
-        if (correctMatch && currentQuestion) {
-          currentQuestion.correctAnswer = correctMatch[1].toUpperCase();
+        if (correctMatch) {
+          if (currentQuestion) {
+            currentQuestion.correctAnswer = correctMatch[1].toUpperCase();
+          }
           continue;
         }
 
-        // Check for explanation
-        const expMatch = line.match(/^(?:giải thích|giai thich|lời giải|loi giai|giải thích lý do|explanation)\s*[:\-]\s*(.*)$/i);
-        if (expMatch && currentQuestion) {
-          currentQuestion.explanation = expMatch[1].trim();
+        if (expMatch) {
+          if (currentQuestion) {
+            currentQuestion.explanation = expMatch[1].trim();
+          }
           continue;
         }
 
-        // If it's a non-empty generic string and we have a currentQuestion
-        if (currentQuestion) {
-          if (!currentQuestion.question) {
-            currentQuestion.question = line;
-          } else if (Object.keys(currentQuestion.answers).length === 0) {
-            // Append to question title if we haven't seen answer options yet
-            currentQuestion.question += " " + line;
-          } else if (currentQuestion.correctAnswer && !currentQuestion.explanation) {
+        // Standard text lines:
+        // If we are currently inside a question and already have options and correct answer, this line is part of explanation
+        if (currentQuestion && Object.keys(currentQuestion.answers).length >= 2) {
+          if (currentQuestion.correctAnswer) {
             currentQuestion.explanation = (currentQuestion.explanation ? currentQuestion.explanation + " " : "") + line;
           }
         } else {
-          // Fallback context: Initialize a question if not started via Câu hỏi prefix
-          currentQuestion = {
-            id: questionObjects.length + 1,
-            question: line,
-            answers: {},
-            correctAnswer: "",
-            explanation: "",
-          };
+          // Otherwise, it's part of the upcoming question title
+          pendingQuestionTitle = (pendingQuestionTitle ? pendingQuestionTitle + " " : "") + line;
         }
       }
 
-      // Add last parsed question if valid
+      // Add the last question if valid
       if (currentQuestion && currentQuestion.question && Object.keys(currentQuestion.answers).length >= 2) {
         questionObjects.push(currentQuestion);
       }
@@ -387,7 +386,7 @@ ${resultList}
 
 ---
 
-### X. YÊU CẦU ĐỐI VỚI BẢN XUẤT CODE (CODE ARCHITECTURE RULES)
+### X. YÊU CẦU ĐỐI VỚI BẢN XUẤX CODE (CODE ARCHITECTURE RULES)
 1. **Không viết code giả, không dùng ghi chú trống**: Không được viết code dang dở dạng \`// chèn logic tại đây\` hoặc \`/* tự viết thêm câu hỏi ở đây */\`. Tất cả hàm, giao diện, vòng lặp game, mảng dữ liệu, âm thanh Web Audio API phải được viết ĐẦY ĐỦ, HOÀN CHỈNH 100%.
 2. **Không dùng thư viện Framework cồng kềnh ngoài**: Chỉ sử dụng HTML5, CSS3 hiện đại, và JavaScript thuần túy (Vanilla JS). Bạn có thể tích hợp thư viện FontAwesome hoặc Tailwind CSS thông qua CDN ở thẻ \`<head>\` để vẽ biểu tượng sắc nét, nhưng JavaScript điều khiển game phải viết tay nguyên bản.
 3. Code cần tổ chức khoa học: Có các biến cấu hình dễ điều chỉnh ở đầu khay \`<script>\`, phân tách rõ các hàm khởi tạo giao diện, cập nhật điểm, phát nhạc, chuyển màn hình, chấm điểm và cài đặt lại cuộc chơi.

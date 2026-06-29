@@ -42,6 +42,8 @@ import {
 } from "lucide-react";
 import { GameConfig, GAME_TYPES_PRESETS, TEMPLATE_SAMPLES } from "./types";
 import { compilePrompt } from "./promptCompiler";
+import mammoth from "mammoth";
+import { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel } from "docx";
 import { auth, db } from "./firebase";
 import {
   signInWithPopup,
@@ -470,40 +472,40 @@ export default function App() {
   };
 
   const downloadTxtTemplate = () => {
-    const content = `Câu hỏi 1: 2 x 3 bằng bao nhiêu?
-   A. 5
-   B. 6
-   C. 7
-   D. 8
-   Đáp án đúng: B
+    const content = `Câu hỏi 1: Thiết bị nào sau đây dùng để nhập dữ liệu vào máy tính?
+A. Màn hình
+B. Máy in
+C. Bàn phím
+D. Loa
+Đáp án đúng: C
 
-Câu hỏi 2: Tên hành tinh màu đỏ là gì?
-   A. Sao Kim
-   B. Sao Hỏa
-   C. Sao Mộc
-   D. Trái Đất
-   Đáp án đúng: B
+Câu hỏi 2: Thủ đô của nước Việt Nam là thành phố nào?
+A. Thành phố Hồ Chí Minh
+B. Hà Nội
+C. Đà Nẵng
+D. Cần Thơ
+Đáp án đúng: B
 
-Câu hỏi 3: Ai là tác giả của Truyện Kiều?
-   A. Nguyễn Du
-   B. Nguyễn Trãi
-   C. Trần Hưng Đạo
-   D. Hồ Xuân Hương
-   Đáp án đúng: A
+Câu hỏi 3: Ai là tác giả của tác phẩm "Truyện Kiều"?
+A. Nguyễn Du
+B. Nguyễn Trãi
+C. Trần Hưng Đạo
+D. Hồ Xuân Hương
+Đáp án đúng: A
 
-Câu hỏi 4: Nước sôi ở nhiệt độ bao nhiêu độ C ở áp suất thường?
-   A. 90
-   B. 100
-   C. 120
-   D. 80
-   Đáp án đúng: B
+Câu hỏi 4: Nước sôi ở nhiệt độ bao nhiêu độ C ở áp suất tiêu chuẩn?
+A. 90 độ C
+B. 100 độ C
+C. 120 độ C
+D. 80 độ C
+Đáp án đúng: B
 
-Câu hỏi 5: Thủ đô của Việt Nam là thành phố nào?
-   A. TP. Hồ Chí Minh
-   B. Hà Nội
-   C. Đà Nẵng
-   D. Cần Thơ
-   Đáp án đúng: B`;
+Câu hỏi 5: Tên hành tinh màu đỏ trong Hệ Mặt Trời là gì?
+A. Sao Kim
+B. Sao Hỏa
+C. Sao Mộc
+D. Trái Đất
+Đáp án đúng: B`;
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -515,52 +517,130 @@ Câu hỏi 5: Thủ đô của Việt Nam là thành phố nào?
   };
 
   const downloadDocTemplate = () => {
-    const rawContent = `MẪU ĐỊNH DẠNG CÂU HỎI TRÒ CHƠI GIÁO DỤC
-(Copy toàn bộ nội dung mẫu dưới đây dán thẳng vào ứng dụng)
+    try {
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: [
+              new Paragraph({
+                text: "MẪU ĐỊNH DẠNG CÂU HỎI TRÒ CHƠI GIÁO DỤC",
+                heading: HeadingLevel.TITLE,
+                alignment: AlignmentType.CENTER,
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: "(Hãy copy toàn bộ nội dung mẫu dưới đây dán thẳng vào ứng dụng)",
+                    italics: true,
+                    color: "555555",
+                  }),
+                ],
+                alignment: AlignmentType.CENTER,
+              }),
+              new Paragraph({ text: "" }), // Spacing
 
-Câu hỏi 1: 2 x 3 bằng bao nhiêu?
-A. 5
-B. 6
-C. 7
-D. 8
-Đáp án đúng: B
+              // Q1
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Câu hỏi 1: Thiết bị nào sau đây dùng để nhập dữ liệu vào máy tính?", bold: true }),
+                ],
+              }),
+              new Paragraph({ text: "A. Màn hình" }),
+              new Paragraph({ text: "B. Máy in" }),
+              new Paragraph({ text: "C. Bàn phím" }),
+              new Paragraph({ text: "D. Loa" }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Đáp án đúng: C", bold: true, color: "15803D" }),
+                ],
+              }),
+              new Paragraph({ text: "" }), // Spacing
 
-Câu hỏi 2: Tên hành tinh màu đỏ là gì?
-A. Sao Kim
-B. Sao Hỏa
-C. Sao Mộc
-D. Trái Đất
-Đáp án đúng: B
+              // Q2
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Câu hỏi 2: Thủ đô của nước Việt Nam là thành phố nào?", bold: true }),
+                ],
+              }),
+              new Paragraph({ text: "A. Thành phố Hồ Chí Minh" }),
+              new Paragraph({ text: "B. Hà Nội" }),
+              new Paragraph({ text: "C. Đà Nẵng" }),
+              new Paragraph({ text: "D. Cần Thơ" }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Đáp án đúng: B", bold: true, color: "15803D" }),
+                ],
+              }),
+              new Paragraph({ text: "" }), // Spacing
 
-Câu hỏi 3: Ai là tác giả của Truyện Kiều?
-A. Nguyễn Du
-B. Nguyễn Trãi
-C. Trần Hưng Đạo
-D. Hồ Xuân Hương
-Đáp án đúng: A
+              // Q3
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Câu hỏi 3: Ai là tác giả của tác phẩm \"Truyện Kiều\"?", bold: true }),
+                ],
+              }),
+              new Paragraph({ text: "A. Nguyễn Du" }),
+              new Paragraph({ text: "B. Nguyễn Trãi" }),
+              new Paragraph({ text: "C. Trần Hưng Đạo" }),
+              new Paragraph({ text: "D. Hồ Xuân Hương" }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Đáp án đúng: A", bold: true, color: "15803D" }),
+                ],
+              }),
+              new Paragraph({ text: "" }), // Spacing
 
-Câu hỏi 4: Nước sôi ở nhiệt độ bao nhiêu độ C ở áp suất thường?
-A. 90
-B. 100
-C. 120
-D. 80
-Đáp án đúng: B
+              // Q4
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Câu hỏi 4: Nước sôi ở nhiệt độ bao nhiêu độ C ở áp suất tiêu chuẩn?", bold: true }),
+                ],
+              }),
+              new Paragraph({ text: "A. 90 độ C" }),
+              new Paragraph({ text: "B. 100 độ C" }),
+              new Paragraph({ text: "C. 120 độ C" }),
+              new Paragraph({ text: "D. 80 độ C" }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Đáp án đúng: B", bold: true, color: "15803D" }),
+                ],
+              }),
+              new Paragraph({ text: "" }), // Spacing
 
-Câu hỏi 5: Thủ đô của Việt Nam là thành phố nào?
-A. TP. Hồ Chí Minh
-B. Hà Nội
-C. Đà Nẵng
-D. Cần Thơ
-Đáp án đúng: B`;
+              // Q5
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Câu hỏi 5: Tên hành tinh màu đỏ trong Hệ Mặt Trời là gì?", bold: true }),
+                ],
+              }),
+              new Paragraph({ text: "A. Sao Kim" }),
+              new Paragraph({ text: "B. Sao Hỏa" }),
+              new Paragraph({ text: "C. Sao Mộc" }),
+              new Paragraph({ text: "D. Trái Đất" }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Đáp án đúng: B", bold: true, color: "15803D" }),
+                ],
+              }),
+            ],
+          },
+        ],
+      });
 
-    const blob = new Blob([rawContent], { type: "application/msword;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "mau_cau_hoi_game_giao_duc.doc";
-    link.click();
-    URL.revokeObjectURL(url);
-    triggerNotification("Đã tải xuống file mẫu Word .doc!");
+      Packer.toBlob(doc).then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "mau_cau_hoi_game_giao_duc.docx";
+        link.click();
+        URL.revokeObjectURL(url);
+        triggerNotification("Đã tải xuống file mẫu Word chuẩn .docx!");
+      });
+    } catch (error) {
+      console.error(error);
+      triggerNotification("Có lỗi xảy ra khi tạo file Word .docx!", "warning");
+    }
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -574,38 +654,63 @@ D. Cần Thơ
       reader.onload = (event) => {
         const text = event.target?.result as string;
         if (text) {
-          updateField("rawQuestions", text);
+          setConfig(prev => ({
+            ...prev,
+            rawQuestions: text,
+            aiGenerateQuestions: false
+          }));
           // Extract general question count for nicer feedback
           const textBuffer = text.trim();
           let count = 0;
           if (textBuffer.includes("|")) {
             count = textBuffer.split("\n").filter(l => l.includes("|")).length;
           } else {
-            count = (textBuffer.match(/(?:câu hỏi|cau hoi|câu|cau)\s*\d*\s*[:\-]/gi) || []).length;
+            count = (textBuffer.match(/(?:câu hỏi|cau hoi|câu|cau)\s*\d*\s*[\.\:\-]/gi) || []).length;
             if (count === 0) {
               count = textBuffer.split("\n").filter(l => l.trim()).length;
             }
           }
-          triggerNotification(`Đã tải lên ${file.name} thành công với khoảng ${count} câu hỏi!`);
+          triggerNotification(`Đã tải lên ${file.name} thành công với khoảng ${count} câu hỏi!`, "success");
         }
       };
       reader.readAsText(file, "UTF-8");
-    } else if (fileExtension === "doc" || fileExtension === "docx") {
-      // Direct doc/docx contains complex binary file layout and cannot raw read via readAsText.
-      // Inform users in a helpful supportive way that copying Word text block is perfect.
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        if (text && text.includes("Câu hỏi 1")) {
-          // Fallback if some raw content was read successfully
-          updateField("rawQuestions", text);
-          triggerNotification(`Khởi nạp câu hỏi định dạng Word thành công!`);
-          return;
+    } else if (fileExtension === "docx") {
+      reader.onload = async (event) => {
+        const arrayBuffer = event.target?.result as ArrayBuffer;
+        try {
+          // Trích xuất văn bản thô từ file Word (.docx) bằng mammoth
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          const text = result.value;
+          if (text && text.trim()) {
+            setConfig(prev => ({
+              ...prev,
+              rawQuestions: text,
+              aiGenerateQuestions: false
+            }));
+            const textBuffer = text.trim();
+            let count = 0;
+            if (textBuffer.includes("|")) {
+              count = textBuffer.split("\n").filter(l => l.includes("|")).length;
+            } else {
+              count = (textBuffer.match(/(?:câu hỏi|cau hoi|câu|cau)\s*\d*\s*[\.\:\-]/gi) || []).length;
+              if (count === 0) {
+                count = textBuffer.split("\n").filter(l => l.trim()).length;
+              }
+            }
+            triggerNotification(`Đã tải lên tệp Word ${file.name} thành công với khoảng ${count} câu hỏi!`, "success");
+          } else {
+            triggerNotification("Không thể đọc được dữ liệu chữ từ tệp Word này. Hãy chắc chắn tệp không rỗng.", "warning");
+          }
+        } catch (err) {
+          console.error("Lỗi phân tích file Word:", err);
+          triggerNotification("Có lỗi xảy ra khi đọc tệp Word (.docx). Vui lòng lưu dưới dạng .txt hoặc sao chép thủ công.", "warning");
         }
-        triggerNotification("Khuyên dùng: Mở file Word, chọn tất cả (Ctrl+A) -> Sao chép (Ctrl+C) rồi Dán (Ctrl+V) thẳng vào khung nhập bên dưới để chuẩn 100%!", "warning");
       };
-      reader.readAsText(file, "UTF-8");
+      reader.readAsArrayBuffer(file);
+    } else if (fileExtension === "doc") {
+      triggerNotification("Tệp định dạng .doc (Word cũ) không được hỗ trợ trực tiếp. Bạn vui lòng lưu lại dưới dạng .docx (Word mới) hoặc sao chép và dán trực tiếp nhé!", "warning");
     } else {
-      triggerNotification("Vui lòng tải lên file văn bản có định dạng .txt hoặc .csv!", "warning");
+      triggerNotification("Vui lòng tải lên file văn bản có định dạng .txt, .csv hoặc .docx (Word)!", "warning");
     }
   };
 
@@ -2107,7 +2212,7 @@ Ví dụ:
                               type="button"
                               onClick={downloadDocTemplate}
                               className="px-3 py-2 bg-slate-900 hover:bg-slate-850 hover:text-amber-400 text-slate-200 border border-slate-800 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95"
-                              title="Tải xuống tệp Microsoft Word .doc dạng tự nhiên giống hệt ảnh"
+                              title="Tải xuống tệp Microsoft Word .docx dạng tự nhiên"
                             >
                               <FileText className="h-3.5 w-3.5 text-blue-400" />
                               Tải File Word mẫu
@@ -2122,13 +2227,13 @@ Ví dụ:
                             2. Tải lên tệp đã hoàn thiện:
                           </span>
                           <p className="text-[11px] text-slate-400 leading-relaxed">
-                            Tải file .txt bạn đã sẵn có lên hệ thống để phân tích tự động:
+                            Tải file câu hỏi của bạn lên hệ thống để phân tích và trích xuất tự động:
                           </p>
                           <div className="pt-1">
                             <label className="relative flex flex-col items-center justify-center border border-dashed border-slate-800 hover:border-amber-500/50 bg-slate-900/30 hover:bg-amber-955/5 rounded-xl px-4 py-2 text-center cursor-pointer transition-all duration-300">
                               <Upload className="h-4 w-4 text-amber-500/80 mb-0.5 animate-bounce" />
                               <span className="text-xs text-slate-300 font-bold">Chọn tệp từ thiết bị</span>
-                              <span className="text-[9px] text-slate-500 font-medium">Hỗ trợ file .txt, .csv (Word khuyến khích copy-paste)</span>
+                              <span className="text-[9px] text-amber-450 font-semibold bg-amber-450/10 px-2.5 py-1 rounded border border-amber-500/20 mt-1">Hỗ trợ Word (.docx) trực tiếp, .txt, .csv</span>
                               <input
                                 type="file"
                                 accept=".txt,.doc,.docx,.csv"
@@ -2140,25 +2245,90 @@ Ví dụ:
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block text-xs font-bold text-slate-300 uppercase mb-1">
-                          Vùng dán danh sách câu hỏi (Copy-paste)
-                        </label>
-                        <textarea
-                          rows={10}
-                          placeholder={`Khuyên dùng dán dạng khối tự nhiên (như Word):
-
-Câu hỏi 1: Thủ đô của Pháp là gì?
-A. London
-B. Berlin
-C. Paris
-D. Rome
+                      <div className="space-y-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            Vùng dán danh sách câu hỏi (Định dạng Word chuẩn)
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const sampleWordFormat = `Câu hỏi 1: Thiết bị nào sau đây dùng để nhập dữ liệu vào máy tính?
+A. Màn hình
+B. Máy in
+C. Bàn phím
+D. Loa
 Đáp án đúng: C
 
-Câu hỏi 2: ...`}
+Câu hỏi 2: Thủ đô của nước Việt Nam là thành phố nào?
+A. Thành phố Hồ Chí Minh
+B. Hà Nội
+C. Đà Nẵng
+D. Cần Thơ
+Đáp án đúng: B
+
+Câu hỏi 3: Ai là tác giả của tác phẩm "Truyện Kiều"?
+A. Nguyễn Du
+B. Nguyễn Trãi
+C. Trần Hưng Đạo
+D. Hồ Xuân Hương
+Đáp án đúng: A
+
+Câu hỏi 4: Nước sôi ở nhiệt độ bao nhiêu độ C (ở điều kiện tiêu chuẩn)?
+A. 90 độ C
+B. 100 độ C
+C. 120 độ C
+D. 80 độ C
+Đáp án đúng: B
+
+Câu hỏi 5: Tên hành tinh màu đỏ trong Hệ Mặt Trời là gì?
+A. Sao Kim
+B. Sao Hỏa
+C. Sao Mộc
+D. Trái Đất
+Đáp án đúng: B`;
+                              setConfig(prev => ({
+                                ...prev,
+                                rawQuestions: sampleWordFormat,
+                                aiGenerateQuestions: false
+                              }));
+                              triggerNotification("Đã nạp danh sách câu hỏi định dạng Word mẫu thành công!", "success");
+                            }}
+                            className="text-[10px] bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 hover:border-amber-500/50 px-2.5 py-1 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1 cursor-pointer self-start sm:self-auto"
+                          >
+                            <FileText className="h-3 w-3" /> Nạp nhanh 5 câu mẫu chuẩn Word
+                          </button>
+                        </div>
+                        <textarea
+                          rows={11}
+                          placeholder={`Hãy soạn hoặc dán câu hỏi của bạn theo định dạng tự nhiên như sau:
+
+Câu hỏi 1: Thiết bị nào sau đây dùng để nhập dữ liệu vào máy tính?
+A. Màn hình
+B. Máy in
+C. Bàn phím
+D. Loa
+Đáp án đúng: C
+
+Câu hỏi 2: Trái Đất quay quanh ngôi sao nào?
+A. Mặt Trăng
+B. Sao Hỏa
+C. Mặt Trời
+D. Sao Kim
+Đáp án đúng: C
+
+(Bạn có thể bấm nút "Nạp nhanh 5 câu mẫu chuẩn Word" ở trên để xem trực quan và chỉnh sửa trực tiếp!)`}
                           value={config.rawQuestions}
-                          onChange={(e) => updateField("rawQuestions", e.target.value)}
-                          className="w-full px-3 py-2 text-xs rounded-lg border border-slate-800 bg-slate-950 focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 focus-glow-amber text-slate-100 font-mono transition-all hover:border-slate-700"
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setConfig(prev => ({
+                              ...prev,
+                              rawQuestions: val,
+                              aiGenerateQuestions: val.trim() ? false : prev.aiGenerateQuestions
+                            }));
+                          }}
+                          className="w-full px-3 py-2 text-xs rounded-lg border border-slate-800 bg-slate-950 focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 focus-glow-amber text-slate-100 font-mono transition-all hover:border-slate-700 leading-relaxed"
                         />
                       </div>
 
@@ -2179,7 +2349,11 @@ Câu hỏi 2: ...`}
                             onClick={() => {
                               if (newQuestionInput.trim()) {
                                 const currentRaw = config.rawQuestions ? config.rawQuestions + "\n" : "";
-                                updateField("rawQuestions", currentRaw + newQuestionInput.trim());
+                                setConfig(prev => ({
+                                  ...prev,
+                                  rawQuestions: currentRaw + newQuestionInput.trim(),
+                                  aiGenerateQuestions: false
+                                }));
                                 setNewQuestionInput("");
                                 triggerNotification("Đã thêm câu hỏi vào ngân hàng thành công!");
                               }
